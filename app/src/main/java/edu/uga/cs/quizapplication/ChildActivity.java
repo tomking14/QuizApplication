@@ -10,20 +10,22 @@ import androidx.viewpager.widget.ViewPager;
 public class ChildActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
+    private int totalQuestions = 6;
+    private boolean isLastQuestion = false;// Replace with the total number of questions in your quiz
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.child_activity); // Use the correct layout here
+        setContentView(R.layout.child_activity);
 
         viewPager = findViewById(R.id.viewPager);
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+
     }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
-
-        private final int NUM_PAGES = 6;
+        private final int NUM_PAGES = totalQuestions;
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -43,8 +45,11 @@ public class ChildActivity extends AppCompatActivity {
             MyFragment fragment = new MyFragment();
             Bundle args = new Bundle();
             args.putString("text", "What is the capital of Page " + (position + 1));
+            args.putBoolean("isLastQuestion", position == (NUM_PAGES - 1));
             fragment.setArguments(args);
             return fragment;
         }
     }
+
+
 }
