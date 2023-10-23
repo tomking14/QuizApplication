@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class MyFragment extends Fragment {
 
     private Button submitButton;
-    private boolean isLastQuestion = false; // Set this to true for the last question
+ // Set this to true for the last question
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,8 +56,7 @@ public class MyFragment extends Fragment {
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Handle quiz submission logic here
-                    // For example, store the user's answers, calculate results, and show the ResultFragment
+
                     showResults();
                 }
             });
@@ -67,7 +66,6 @@ public class MyFragment extends Fragment {
     }
 
     private void showResults() {
-        // Create an Intent to start the ResultActivity
         Intent resultIntent = new Intent(getActivity(), ResultsActivity.class);
         // Add any data you want to pass to the ResultActivity using putExtra
         resultIntent.putExtra("someKey", "someValue");
