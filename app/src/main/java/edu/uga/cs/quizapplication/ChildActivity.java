@@ -23,7 +23,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-        private final int NUM_PAGES = 3;
+        private final int NUM_PAGES = 6;
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -42,7 +42,7 @@ public class ChildActivity extends AppCompatActivity {
         private Fragment createFragment(int position) {
             MyFragment fragment = new MyFragment();
             Bundle args = new Bundle();
-            args.putString("text", "Page " + (position + 1));
+            args.putString("text", "What is the capital of Page " + (position + 1));
             fragment.setArguments(args);
             return fragment;
         }
