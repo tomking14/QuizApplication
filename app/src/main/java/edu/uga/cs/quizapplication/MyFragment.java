@@ -1,15 +1,22 @@
 package edu.uga.cs.quizapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class MyFragment extends Fragment {
+
+    private Button submitButton;
+    private boolean isLastQuestion = false; // Set this to true for the last question
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -21,6 +28,8 @@ public class MyFragment extends Fragment {
         RadioButton radioButton1 = view.findViewById(R.id.radio_button1);
         RadioButton radioButton2 = view.findViewById(R.id.radio_button2);
         RadioButton radioButton3 = view.findViewById(R.id.radio_button3);
+
+        boolean isLastQuestion = getArguments().getBoolean("isLastQuestion", false);
 
         // Set the text
         String text = getArguments().getString("text");
@@ -40,6 +49,30 @@ public class MyFragment extends Fragment {
             }
         });
 
+        // Check if this is the last question and show the submit button
+        if (isLastQuestion) {
+            submitButton = view.findViewById(R.id.submit_button);
+            submitButton.setVisibility(View.VISIBLE);
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Handle quiz submission logic here
+                    // For example, store the user's answers, calculate results, and show the ResultFragment
+                    showResults();
+                }
+            });
+        }
+
         return view;
+    }
+
+    private void showResults() {
+        // Create an Intent to start the ResultActivity
+        Intent resultIntent = new Intent(getActivity(), ResultsActivity.class);
+        // Add any data you want to pass to the ResultActivity using putExtra
+        resultIntent.putExtra("someKey", "someValue");
+
+        // Start the ResultActivity
+        startActivity(resultIntent);
     }
 }
