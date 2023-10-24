@@ -65,12 +65,12 @@ public class QuizDBHelper extends SQLiteOpenHelper {
 
 
     public void populateQuestions(Context context) {
-        AssetManager aset = context.getAssets();
+        AssetManager asset = context.getAssets();
         SQLiteDatabase db = getWritableDatabase();
 
         InputStream inStream;
         try {
-            inStream = aset.open("StateCapitals.csv");
+            inStream = asset.open("StateCapitals.csv");
             BufferedReader buffer = new BufferedReader(new InputStreamReader(inStream));
             String line = "";
             db.beginTransaction();

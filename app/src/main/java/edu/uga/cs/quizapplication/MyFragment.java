@@ -12,19 +12,26 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import android.content.Context;
+import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import androidx.lifecycle.ViewModelProvider;
 
 public class MyFragment extends Fragment {
 
     private Button submitButton;
+    private int questionsRight;
+    private int questionsWrong;
+    private QuizViewModel quizViewModel;
  // Set this to true for the last question
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_view_pager, container, false);
+        quizViewModel = new ViewModelProvider(requireActivity()).get(QuizViewModel.class);
 
         // Get references to the text and radio buttons
         TextView textView = view.findViewById(R.id.text_view);
@@ -63,12 +70,15 @@ public class MyFragment extends Fragment {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.radio_button1) {
-                    // Handle radio button 1 selection
-                } else if (checkedId == R.id.radio_button2) {
-                    // Handle radio button 2 selection
-                } else if (checkedId == R.id.radio_button3) {
-                    // Handle radio button 3 selection
+                RadioButton selectedRadioButton = group.findViewById(checkedId);
+                String selectedValue = selectedRadioButton.getText().toString();
+
+                if (selectedValue.equals(capitalCity)) {
+                    // Increment the count for the correct answer in the ViewModel
+                    quizViewModel.incrementRight();
+                } else {
+                    // Increment the count for the wrong answer in the ViewModel
+                    quizViewModel.incrementWrong();
                 }
             }
         });
@@ -91,8 +101,11 @@ public class MyFragment extends Fragment {
 
     private void showResults() {
         Intent resultIntent = new Intent(getActivity(), ResultsActivity.class);
+        questionsRight = quizViewModel.getQuestionsRight();
+        questionsWrong = quizViewModel.getQuestionsWrong();
         // Add any data you want to pass to the ResultActivity using putExtra
-        resultIntent.putExtra("someKey", "someValue");
+        resultIntent.putExtra("questionsRight", questionsRight);
+        resultIntent.putExtra("questionsWrong", questionsWrong);
 
         // Start the ResultActivity
         startActivity(resultIntent);

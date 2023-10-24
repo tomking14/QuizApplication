@@ -14,19 +14,24 @@ import android.widget.TextView;
 
 public class ResultsActivity extends AppCompatActivity {
     private Button homeBtn;
+    private TextView rightResults;
+    private TextView wrongResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.results_fragment); // Set the layout for the result screen
+        setContentView(R.layout.results_fragment);
+        Intent intent = getIntent();
+
+        // Retrieve the values from the Intent using the keys
+        int questionsRight = intent.getIntExtra("questionsRight", 0); // 0 is the default value if the key is not found
+        int questionsWrong = intent.getIntExtra("questionsWrong", 0);
+
         homeBtn = findViewById(R.id.backToMainButton);
-        homeBtn.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-            goToMainActivity();
-        }
-    });
-
+        rightResults = findViewById(R.id.text_view_correct);
+        wrongResults = findViewById(R.id.text_view_incorrect);
+        rightResults.setText( "You got " + String.valueOf(questionsRight) + " questions correct!");
+        wrongResults.setText("You got "+ String.valueOf(questionsWrong) + " questions incorrect...");
 
         homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +39,7 @@ public class ResultsActivity extends AppCompatActivity {
                 goToMainActivity();
             }
         });
+
     }
 
     public void goToMainActivity() {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.Map;
 public class ChildActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
+    private QuizViewModel quizViewModel;
     private int totalQuestions = 6;
-    private boolean isLastQuestion = false;// Replace with the total number of questions in your quiz
+
     private List<Map<String, String>> questions; // Store the questions here
 
     @Override
@@ -30,6 +32,7 @@ public class ChildActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        quizViewModel = new ViewModelProvider(this).get(QuizViewModel.class);
 
     }
 
