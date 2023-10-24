@@ -3,6 +3,7 @@ package edu.uga.cs.quizapplication;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,6 +13,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class QuizDBHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
@@ -63,12 +70,14 @@ public class QuizDBHelper extends SQLiteOpenHelper {
 
         InputStream inStream;
         try {
-            inStream = aset.open("state_capitals.csv");
+            inStream = aset.open("StateCapitals.csv");
             BufferedReader buffer = new BufferedReader(new InputStreamReader(inStream));
             String line = "";
             db.beginTransaction();
             while ((line = buffer.readLine()) != null) {
                 String[] columns = line.split(",");
+                System.out.println("Inserting: " + Arrays.toString(columns));
+
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("state_name", columns[0]);
                 contentValues.put("capital_city", columns[1]);
@@ -83,10 +92,46 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         }
 
 
-
-
-
-
-
     }
+
+    public boolean isTableEmpty() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT (*)  FROM quiz_questions",null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count == 0;
+    }
+    // Method to get random questions for a new quiz
+    public List<Map<String, String>> Randomizer(int n) {
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM quiz_questions", null);
+
+        List<Map<String, String>> allQuestions = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Map<String, String> question = new HashMap<>();
+                question.put("question_id", String.valueOf(cursor.getInt(0)));
+                question.put("state_name", cursor.getString(1));
+                question.put("capital_city", cursor.getString(2));
+                question.put("additional_city1", cursor.getString(3));
+                question.put("additional_city2", cursor.getString(4));
+                allQuestions.add(question);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        // Randomly select 'n' questions
+        Random rand = new Random();
+        List<Map<String, String>> selectedQuestions = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int randomIndex = rand.nextInt(allQuestions.size());
+            selectedQuestions.add(allQuestions.get(randomIndex));
+            allQuestions.remove(randomIndex);  // Remove this question to avoid duplicates
+        }
+        return selectedQuestions;
+    }
+
+
 }

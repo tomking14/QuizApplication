@@ -13,6 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class MyFragment extends Fragment {
 
     private Button submitButton;
@@ -29,11 +33,31 @@ public class MyFragment extends Fragment {
         RadioButton radioButton2 = view.findViewById(R.id.radio_button2);
         RadioButton radioButton3 = view.findViewById(R.id.radio_button3);
 
+        // delete below
+        // Fetch the question data from arguments
+        String stateName = getArguments().getString("stateName");
+        String capitalCity = getArguments().getString("capitalCity");
+        String additionalCity1 = getArguments().getString("additionalCity1");
+        String additionalCity2 = getArguments().getString("additionalCity2");
+
+        textView.setText("What is the capital of " + stateName + "?");
+
+        // Randomly set the choices
+        List<String> choices = Arrays.asList(capitalCity, additionalCity1, additionalCity2);
+        Collections.shuffle(choices);
+        radioButton1.setText(choices.get(0));
+        radioButton2.setText(choices.get(1));
+        radioButton3.setText(choices.get(2));
+
+
+        //delete above
+
+
         boolean isLastQuestion = getArguments().getBoolean("isLastQuestion", false);
 
         // Set the text
-        String text = getArguments().getString("text");
-        textView.setText(text);
+//        String text = getArguments().getString("text");
+//        textView.setText(text);
 
         // Handle radio button selection
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

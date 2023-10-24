@@ -19,9 +19,15 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        homeBtn = findViewById(R.id.backToMainButton);
-        setContentView(R.layout.results_fragment); // Set the layout for the result screen
 
+        setContentView(R.layout.results_fragment); // Set the layout for the result screen
+        homeBtn = findViewById(R.id.backToMainButton);
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+            goToMainActivity();
+        }
+    });
 
     }
     public void goToMainActivity() {
