@@ -27,6 +27,13 @@
         android:text="Back to Homepage"
         android:translationY="40dp"
         />
+    <Button
+        android:id="@+id/backToHistoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See Quiz History"
+        android:translationY="60dp"
+        />
 
     <!-- Add any other result-related views as needed -->
 

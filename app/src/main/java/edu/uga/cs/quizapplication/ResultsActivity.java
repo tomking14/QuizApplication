@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 public class ResultsActivity extends AppCompatActivity {
     private Button homeBtn;
+    private Button historyBtn;
     private TextView rightResults;
     private TextView wrongResults;
 
@@ -28,6 +29,7 @@ public class ResultsActivity extends AppCompatActivity {
         int questionsWrong = intent.getIntExtra("questionsWrong", 0);
 
         homeBtn = findViewById(R.id.backToMainButton);
+        historyBtn = findViewById(R.id.backToHistoryButton);
         rightResults = findViewById(R.id.text_view_correct);
         wrongResults = findViewById(R.id.text_view_incorrect);
         rightResults.setText( "You got " + String.valueOf(questionsRight) + " questions correct!");
@@ -39,11 +41,22 @@ public class ResultsActivity extends AppCompatActivity {
                 goToMainActivity();
             }
         });
+        historyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToHistoryActivity();
+            }
+        });
 
     }
 
     public void goToMainActivity() {
         Intent intent = new Intent(ResultsActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+    public void goToHistoryActivity() {
+        Intent intent = new Intent(ResultsActivity.this, HistoryActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
