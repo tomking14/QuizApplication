@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private QuizDBHelper dbHelper;
 
     private Button startButton;
+    private Button historyButton;
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         startButton = findViewById(R.id.startBtn);
         startButton.setOnClickListener( new overviewButtonClickListener());
+
+        historyButton = findViewById(R.id.historyBtn);
+        historyButton.setOnClickListener( new historyButtonClickListener());
 
     }
 
@@ -65,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
             try {
                 // Gain access to the app's resources
                 Intent intent = new Intent( view.getContext(), ChildActivity.class );
+                startActivity( intent );
+            } catch (Exception e) {
+                // e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Uh oh, something went wrong...", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }
+    }
+    private class historyButtonClickListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick( View view ) {
+            try {
+                // Gain access to the app's resources
+                Intent intent = new Intent( view.getContext(), HistoryActivity.class );
                 startActivity( intent );
             } catch (Exception e) {
                 // e.printStackTrace();
