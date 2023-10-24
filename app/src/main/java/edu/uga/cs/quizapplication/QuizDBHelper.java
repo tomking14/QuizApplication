@@ -6,6 +6,8 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -64,6 +66,7 @@ public class QuizDBHelper extends SQLiteOpenHelper {
     }
 
 
+
     public void populateQuestions(Context context) {
         AssetManager asset = context.getAssets();
         SQLiteDatabase db = getWritableDatabase();
@@ -84,6 +87,9 @@ public class QuizDBHelper extends SQLiteOpenHelper {
                 contentValues.put("additional_city1", columns[2]);
                 contentValues.put("additional_city2", columns[3]);
                 db.insert("quiz_questions", null, contentValues);
+
+
+
             }
             db.setTransactionSuccessful();
             db.endTransaction();
@@ -132,6 +138,12 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         }
         return selectedQuestions;
     }
+
+    public void clearTable() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("quiz_questions", null, null);
+    }
+
 
 
 }

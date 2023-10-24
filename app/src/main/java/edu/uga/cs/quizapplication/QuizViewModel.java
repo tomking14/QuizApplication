@@ -21,4 +21,8 @@ public class QuizViewModel extends ViewModel {
     public void incrementWrong() {
         questionsWrong++;
     }
+
+    public void decrementWrong() {questionsWrong--;}
+
+    public void decrementRight(){questionsRight--;}
 }

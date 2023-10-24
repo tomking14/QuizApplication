@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbHelper = new QuizDBHelper(this);
 
+        dbHelper.clearTable();
+
+
         // Check if the database is empty and populate it asynchronously if needed
         if (dbHelper.isTableEmpty()) {
             populateDatabaseAsync();

@@ -28,10 +28,20 @@ public class MyFragment extends Fragment {
     private QuizViewModel quizViewModel;
  // Set this to true for the last question
 
+
+
+    private boolean Answer = false;
+    private boolean history = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_view_pager, container, false);
         quizViewModel = new ViewModelProvider(requireActivity()).get(QuizViewModel.class);
+
+
+        Answer = false;
+        history = false;
+
 
         // Get references to the text and radio buttons
         TextView textView = view.findViewById(R.id.text_view);
@@ -72,32 +82,42 @@ public class MyFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton selectedRadioButton = group.findViewById(checkedId);
                 String selectedValue = selectedRadioButton.getText().toString();
+                boolean Correct = selectedValue.equals(capitalCity);
 
-                if (selectedValue.equals(capitalCity)) {
-                    // Increment the count for the correct answer in the ViewModel
-                    quizViewModel.incrementRight();
-                } else {
-                    // Increment the count for the wrong answer in the ViewModel
-                    quizViewModel.incrementWrong();
+
+
+                    if(Correct && !history){
+                        quizViewModel.incrementRight();
+                        quizViewModel.decrementWrong();
+                        history =true;
+                    } else if(!Correct && history){
+                        quizViewModel.incrementWrong();
+                        quizViewModel.decrementRight();
+                        history=false;
+                    }
+
+                    Correct = history;
                 }
+
+
+});
+            // Check if this is the last question and show the submit button
+        if(isLastQuestion)
+
+            {
+                submitButton = view.findViewById(R.id.submit_button);
+                submitButton.setVisibility(View.VISIBLE);
+                submitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        showResults();
+                    }
+                });
             }
-        });
-
-        // Check if this is the last question and show the submit button
-        if (isLastQuestion) {
-            submitButton = view.findViewById(R.id.submit_button);
-            submitButton.setVisibility(View.VISIBLE);
-            submitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    showResults();
-                }
-            });
-        }
 
         return view;
-    }
+        }
 
     private void showResults() {
         Intent resultIntent = new Intent(getActivity(), ResultsActivity.class);
@@ -105,7 +125,7 @@ public class MyFragment extends Fragment {
         questionsWrong = quizViewModel.getQuestionsWrong();
         // Add any data you want to pass to the ResultActivity using putExtra
         resultIntent.putExtra("questionsRight", questionsRight);
-        resultIntent.putExtra("questionsWrong", questionsWrong);
+        resultIntent.putExtra("questionsWrong", (questionsWrong + 6));
 
         // Start the ResultActivity
         startActivity(resultIntent);
