@@ -14,7 +14,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
-import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +25,9 @@ public class MyFragment extends Fragment {
     private int questionsRight;
     private int questionsWrong;
     private QuizViewModel quizViewModel;
- // Set this to true for the last question
+    private String capitalCity; // Store the correct capital city for this question
+    private String selectedChoice;
+    // Set this to true for the last question
 
 
 
@@ -129,5 +130,8 @@ public class MyFragment extends Fragment {
 
         // Start the ResultActivity
         startActivity(resultIntent);
+    }
+    public String getSelectedAnswer() {
+        return selectedChoice;
     }
 }
