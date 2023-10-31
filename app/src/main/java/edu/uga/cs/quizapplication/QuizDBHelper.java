@@ -1,5 +1,6 @@
 package edu.uga.cs.quizapplication;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -23,7 +24,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class QuizDBHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Quiz.db";
 
     public QuizDBHelper(Context context) {
@@ -59,13 +60,36 @@ public class QuizDBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (question5) REFERENCES quiz_questions(question_id)," +
                 "FOREIGN KEY (question6) REFERENCES quiz_questions(question_id))";
         db.execSQL(CREATE_QUIZZES_TABLE);
+
+        //history table
+        String CREATE_HISTORY_TABLE = "CREATE TABLE quiz_history (" +
+                "history_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "quiz_date TEXT," +
+                "questions_correct INTEGER," +
+                "questions_wrong INTEGER)";
+        db.execSQL(CREATE_HISTORY_TABLE);
     }
 
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
 
+//insert history method
+public void insertHistory(String date, int questionsRight, int questionsWrong) {
+    SQLiteDatabase db = getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
+    contentValues.put("quiz_date", date);
+    contentValues.put("questions_correct", questionsRight);
+    contentValues.put("questions_wrong", questionsWrong);
+    long result = db.insert("quiz_history", null, contentValues);
+    if (result == -1) {
+        Log.e("QuizDBHelper", "Failed to insert into quiz_history");
+    } else {
+        Log.d("QuizDBHelper", "Insert into quiz_history successful");
+    }
+}
 
+//delete above
 
     public void populateQuestions(Context context) {
         AssetManager asset = context.getAssets();
@@ -143,6 +167,28 @@ public class QuizDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.delete("quiz_questions", null, null);
     }
+
+
+    //fetch history method
+    @SuppressLint("Range")
+    public List<Map<String, String>> getQuizHistory() {
+        List<Map<String, String>> historyList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM quiz_history", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Map<String, String> history = new HashMap<>();
+                history.put("quiz_date", cursor.getString(cursor.getColumnIndex("quiz_date"))); // Updated key
+                history.put("questions_correct", cursor.getString(cursor.getColumnIndex("questions_correct"))); // Updated key
+                history.put("questions_wrong", cursor.getString(cursor.getColumnIndex("questions_wrong"))); // Updated key
+                historyList.add(history);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return historyList;
+    }
+
 
 
 

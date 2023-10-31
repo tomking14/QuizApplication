@@ -12,6 +12,10 @@ import android.widget.Toast;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class ResultsActivity extends AppCompatActivity {
     private Button homeBtn;
     private Button historyBtn;
@@ -48,7 +52,14 @@ public class ResultsActivity extends AppCompatActivity {
             }
         });
 
-    }
+//date method  call
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+       // Save the quiz results to the database
+        QuizDBHelper dbHelper = new QuizDBHelper(this);
+      dbHelper.insertHistory(date, questionsRight, questionsWrong);
+
+   }
 
     public void goToMainActivity() {
         Intent intent = new Intent(ResultsActivity.this, MainActivity.class);
