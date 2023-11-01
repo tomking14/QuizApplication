@@ -130,7 +130,7 @@ public class MyFragment extends Fragment {
 
         // Insert quiz history into the database
         QuizDBHelper dbHelper = new QuizDBHelper(getActivity());
-     //   dbHelper.insertHistory("2023-10-01", questionsRight, questionsWrong);
+       dbHelper.insertHistory("2023-10-01", questionsRight, questionsWrong);
 
         // Start the ResultActivity
         startActivity(resultIntent);
