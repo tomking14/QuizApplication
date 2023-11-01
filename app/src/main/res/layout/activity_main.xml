@@ -24,7 +24,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
-        android:text="Welcome to our states quiz! Here you will test your knowledge with how good you are at knowing capital states! Press the button below to begin!"
+        android:text="Welcome to our states quiz! Here you will test your knowledge with how good you are at naming state capitals! Press the button below to begin!"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
